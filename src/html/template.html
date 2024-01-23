@@ -4,8 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ device.name }} Peripheral Coverage</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 <style>
 .peripheral, .register {
   border-radius: 3px;
@@ -13,26 +12,25 @@
   margin: 1rem 0;
   padding: 1rem;
 }
-.peripheral h3, .register h4 {
-  margin-top: 0;
-}
 .bitfield td, .bitfield th {
   text-align: center;
 }
 .vertical {
-  padding: 5px 0 !important;
-  vertical-align: middle !important;
+  padding: 0.2rem 0 !important;
+  line-height: 2;
+  vertical-align: middle;
   text-align: center;
-  text-align: -webkit-center;
-}
-.vertical div {
   writing-mode: vertical-lr;
 }
 .headerlink {
   font-size: 50%;
+  vertical-align: middle;
 }
 nav.menu {
   margin: 1rem 0;
+}
+a {
+  text-decoration: none;
 }
 nav.menu a {
   display: inline-block;
@@ -40,14 +38,9 @@ nav.menu a {
   border: solid 1px #ccc;
   padding: 0.3rem;
   margin: 0.1rem;
-  text-decoration: none;
 }
 .bitfield td.separated {
   background-color:#eee;
-}
-summary {
-  /* fix bootstrap 2 bug, https://github.com/twbs/bootstrap/issues/21060 */
-  display: list-item;
 }
 details[open] > summary {
   font-weight: 600;
@@ -56,36 +49,29 @@ details[open] > summary {
 </head>
 
 <body>
-
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-expand bg-dark mb-2" data-bs-theme="dark">
   <div class="container">
-    <div class="navbar-header">
+    <div class="d-flex">
       <a class="navbar-brand" href="index.html">{{ device.name }} Device Coverage</a>
-    </div>
-    <div class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">{{ device.name }} Peripheral Coverage</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#" id="show-all-registers">Show All Registers</a></li>
-        <li><a href="#" id="hide-all-registers">Hide All Registers</a></li>
+      <ul class="navbar-nav d-none d-md-flex">
+        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">{{ device.name }} Peripheral Coverage</a></li>
       </ul>
     </div>
+    <ul class="navbar-nav d-none d-md-flex">
+      <li class="nav-item"><button class="nav-link" id="show-all-registers">Show All Registers</button></li>
+      <li class="nav-item"><button class="nav-link" id="hide-all-registers">Hide All Registers</button></li>
+    </ul>
   </div>
 </nav>
 
 <div class="container">
-  <div class="row">
-    <div class="col-sm-12">
-      <div>
-        Overall: {{ device.fields_documented }}/{{ device.fields_total }}
-        fields covered
-      </div>
-      <div class="progress">
-        
-        <div class="progress-bar progress-bar-success" style="width: {{ device.progress }}%">
-        </div>
-      </div>
+  <div class="my-3">
+    <p class="mb-0">
+      Overall: {{ device.fields_documented }}/{{ device.fields_total }}
+      fields covered
+    </p>
+    <div class="progress">
+      <div class="progress-bar bg-success" style="width: {{ device.progress }}%"></div>
     </div>
   </div>
   <nav class="menu">
@@ -97,14 +83,11 @@ details[open] > summary {
   <div class="peripheral">
     <h3 id="{{ pname }}">
       {{ pname }}
-      <a class="headerlink" href="#{{ pname }}">
-        <span class="glyphicon glyphicon-link"></span>
-      </a>
+      <a class="headerlink" href="#{{ pname }}">🔗</a>
     </h3>
     <p>{{ peripheral.base }}: {{ peripheral.description }}</p>
     <div class="progress">
-
-      <div class="progress-bar progress-bar-success" style="width: {{ peripheral.progress }}%"></div>
+      <div class="progress-bar bg-success" style="width: {{ peripheral.progress }}%"></div>
     </div>
     <p>
       <em>
@@ -114,12 +97,12 @@ details[open] > summary {
     </p>
     <details class="register-map" id="{{ pname }}-register-map">
       <summary>Toggle register map</summary>
-      <table class="table table-bordered register-map-table">
-        <tr>
+      <table class="table table-sm table-bordered register-map-table">
+        <tr class="table-light">
           <th>Offset</th>
           <th>Name</th>
           {%- for i in (0..31) reversed %}
-          <th class="vertical"><div>{{ i }}</div></th>
+          <th class="vertical">{{ i }}</th>
           {%- endfor %}
         </tr>
         {%- for register in peripheral.registers %}
@@ -156,9 +139,7 @@ details[open] > summary {
       <div class="register">
         <h4 id="{{ pname }}:{{ register.name }}">
           {{ register.name }}
-          <a class="headerlink" href="#{{ pname }}:{{ register.name }}">
-            <span class="glyphicon glyphicon-link"></span>
-          </a>
+          <a class="headerlink" href="#{{ pname }}:{{ register.name }}">🔗</a>
         </h4>
         <p>{{ register.description }}</p>
         <p>
@@ -166,8 +147,7 @@ details[open] > summary {
           }}{% if register.writeConstraint.range %}, allowed values: {{ register.writeConstraint.range.minimum }}-{{ register.writeConstraint.range.maximum }}{% endif %}
         </p>
         <div class="progress">
-
-          <div class="progress-bar progress-bar-success" style="width: {{ register.progress }}%"></div>
+          <div class="progress-bar bg-success" style="width: {{ register.progress }}%"></div>
         </div>
         {% if register.fields_total > 0 %}
         <p>
@@ -177,7 +157,7 @@ details[open] > summary {
           </em>
         </p>
         <div class="bitfield">
-          <table class="table table-striped table-bordered bitfield">
+          <table class="table table-sm table-striped table-bordered bitfield">
             {%- for row in register.table %}
             {%- if row %}
             <tr>
@@ -208,9 +188,7 @@ details[open] > summary {
           {%- for field in register.fields %}
           <h4 id="{{ pname }}:{{ register.name }}:{{ field.name }}">
             {{ field.name }}
-            <a class="headerlink" href="#{{ pname }}:{{ register.name }}:{{ field.name }}">
-              <span class="glyphicon glyphicon-link"></span>
-            </a>
+            <a class="headerlink" href="#{{ pname }}:{{ register.name }}:{{ field.name }}">🔗</a>
           </h4>
           <p>
             {%- if field.width > 1 %}
