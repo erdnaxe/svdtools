@@ -4,48 +4,42 @@
 <meta charset="utf-8">
 <meta name=viewport content="width=device-width, initial-scale=1">
 <title>Device Coverage</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<style>
+a {
+  text-decoration: none;
+}
+</style>
 </head>
 
 <body>
-
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-expand bg-dark mb-3" data-bs-theme="dark">
   <div class="container">
-    <div class="navbar-header">
-      <a class="navbar-brand active" href="#">Device Coverage</a>
-    </div>
-    <div class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <li><a href="comparisons.html">Peripheral Comparisons</a></li>
+    <div class="d-flex">
+      <a class="navbar-brand" href="#">Device Coverage</a>
+      <ul class="navbar-nav d-none d-md-flex">
+        <li class="nav-item"><a class="nav-link" href="comparisons.html">Peripheral Comparisons</a></li>
       </ul>
     </div>
   </div>
 </nav>
 
 <div class="container">
-  <div class="row">
-    <div class="col-sm-12">
-      <div>
-        <h3>Available Devices</h3>
-      </div>
-    </div>
-  </div>
-  {% for device in devices %}
-  <div class="row">
+  <h3>Available Devices</h3>
+  {%- for device in devices %}
+  <div class="row mb-2">
     <div class="col-sm-4">
-      <div>
-        <a href="{{ device.name }}.html"><strong>{{ device.name }}</strong></a>
+      <p class="m-0">
+        <a href="{{ device.name }}.html" class="fw-bold">{{ device.name }}</a>
         <a href="{{ device.name|downcase }}.svd.patched">(svd)</a>:
-        {{ device.fields_documented }}/{{ device.fields_total }} fields
-        documented
-      </div>
+        {{ device.fields_documented }}/{{ device.fields_total }} fields documented
+      </p>
     </div>
-    <div class="col-sm-8">
+    <div class="col-sm-8 my-auto">
       <div class="progress">
-        <div class="progress-bar progress-bar-success" style="width: {{ device.progress }}%"></div>
+        <div class="progress-bar bg-success" style="width: {{ device.progress }}%"></div>
       </div>
     </div>
   </div>
-  {% endfor %}
+  {%- endfor %}
 </div>
